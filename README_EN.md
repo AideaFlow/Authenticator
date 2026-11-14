@@ -29,7 +29,7 @@ All account data and secret keys are stored **locally only** — nothing is ever
 </a>
 
 <a href="https://microsoftedge.microsoft.com/addons/detail/authenticator/blmbnklhlljjokbnjjnaboppbkiikhgd">
-  <img src="https://raw.githubusercontent.com/AideaFlow/Authenticator/master/docs/wau.svg" alt="Edge Add-on Weekly Active Users Trend" width="100%" />
+  <img src="https://raw.githubusercontent.com/AideaFlow/Authenticator/master/docs/wau.svg" alt="Edge Add-on Weekly Active Users" />
 </a>
 
 > The weekly active user count is sourced from the Edge Add-ons store page and is updated automatically every week by [GitHub Actions](.github/workflows/update-stats.yml).

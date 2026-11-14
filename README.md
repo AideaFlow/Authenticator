@@ -29,7 +29,7 @@
 </a>
 
 <a href="https://microsoftedge.microsoft.com/addons/detail/authenticator/blmbnklhlljjokbnjjnaboppbkiikhgd">
-  <img src="https://raw.githubusercontent.com/AideaFlow/Authenticator/master/docs/wau.svg" alt="Edge 插件周活跃用户趋势" width="100%" />
+  <img src="https://raw.githubusercontent.com/AideaFlow/Authenticator/master/docs/wau.svg" alt="Edge 插件周活跃用户数" />
 </a>
 
 > 周活跃用户数来自 Edge 加载项商店页面，由 [GitHub Actions](.github/workflows/update-stats.yml) 每周自动更新。
