@@ -32,33 +32,20 @@ def fetch_stars_svg():
         return resp.read().decode("utf-8")
 
 
-def format_number(v):
-    s = str(int(v))
-    out = []
-    for i, ch in enumerate(reversed(s)):
-        if i and i % 3 == 0:
-            out.append(",")
-        out.append(ch)
-    return "".join(reversed(out))
-
-
 def wau_badge_svg(count):
-    """Render the latest weekly active-user count as a simple bold badge."""
-    label = "Weekly Active Users"
-    value = format_number(count)
-
+    """Render the latest weekly active user count as bold text, e.g. "2642 个用户"."""
+    value = str(int(count))
     font = 'font-family="Segoe UI, -apple-system, sans-serif"'
-    lw = len(label) * 8
+    # Rough width estimate: digits ~13px, CJK chars ~18px at 18px font size
     vw = len(value) * 13
-    width = lw + vw + 40
-    height = 40
-    pad = 8
+    cw = len(" 个用户") * 18
+    width = vw + cw + 20
+    height = 30
 
     parts = []
     parts.append('<svg xmlns="http://www.w3.org/2000/svg" width="%d" height="%d" viewBox="0 0 %d %d">' % (width, height, width, height))
-    parts.append('<rect width="100%%" height="100%%" fill="#f6f8fa" rx="6"/>')
-    parts.append('<text x="%d" y="25" %s font-size="14" fill="%s">%s</text>' % (pad, font, MUTED, label))
-    parts.append('<text x="%d" y="25" %s font-size="15" font-weight="700" fill="%s">%s</text>' % (pad + lw + 10, font, TEXT, value))
+    parts.append('<text x="10" y="22" %s font-size="18" font-weight="700" fill="%s">%s</text>' % (font, TEXT, value))
+    parts.append('<text x="%d" y="22" %s font-size="18" fill="%s">%s</text>' % (10 + vw, font, TEXT, " 个用户"))
     parts.append("</svg>")
     return "".join(parts)
 
