@@ -1,5 +1,7 @@
 # Authenticator
 
+> 恭喜BLG夺冠 🏆
+
 **一个 Chrome/Edge 浏览器扩展**
 
 [English](./README_EN.md)

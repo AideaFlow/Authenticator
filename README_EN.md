@@ -1,5 +1,7 @@
 # Authenticator
 
+> Congratulations to BLG on winning the championship! 🏆
+
 **A Chrome/Edge Browser Extension**
 
 [中文](./README.md)

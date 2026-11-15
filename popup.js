@@ -69,6 +69,7 @@ function updateUI() {
   document.getElementById('app-title').textContent = i18n('appName');
   document.getElementById('btn-add').title = i18n('addAccount');
   document.getElementById('btn-settings').title = i18n('settings');
+  document.getElementById('btn-github').title = i18n('githubTooltip');
   document.getElementById('empty-title').textContent = i18n('emptyTitle');
   document.getElementById('empty-hint').textContent = i18n('emptyHint');
   document.getElementById('label-name').textContent = i18n('accountName');
@@ -335,6 +336,9 @@ async function tick() {
 
 document.getElementById('btn-add').addEventListener('click', openAddModal);
 document.getElementById('btn-settings').addEventListener('click', openSettingsModal);
+document.getElementById('btn-github').addEventListener('click', () => {
+  chrome.tabs.create({ url: 'https://github.com/AideaFlow/Authenticator' });
+});
 document.getElementById('btn-cancel').addEventListener('click', closeAddModal);
 document.getElementById('btn-save').addEventListener('click', handleSave);
 document.getElementById('btn-delete-cancel').addEventListener('click', closeDeleteModal);
