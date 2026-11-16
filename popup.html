@@ -94,6 +94,31 @@
           </div>
         </div>
         <div class="form-group">
+          <label id="label-color">主题配色</label>
+          <div class="color-options" id="color-options">
+            <button class="color-swatch active" data-color="blue" title="蓝色" style="--swatch-color:#1a73e8"></button>
+            <button class="color-swatch" data-color="green" title="绿色" style="--swatch-color:#0f9d58"></button>
+            <button class="color-swatch" data-color="teal" title="青色" style="--swatch-color:#009688"></button>
+            <button class="color-swatch" data-color="purple" title="紫色" style="--swatch-color:#7c3aed"></button>
+            <button class="color-swatch" data-color="pink" title="粉色" style="--swatch-color:#e91e63"></button>
+            <button class="color-swatch" data-color="orange" title="橙色" style="--swatch-color:#f57c00"></button>
+            <button class="color-swatch" data-color="gray" title="灰色" style="--swatch-color:#5f6368"></button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label id="label-mode">外观模式</label>
+          <div class="mode-options">
+            <button id="btn-mode-light" class="mode-btn active" data-mode="light">
+              <svg viewBox="0 0 24 24" width="15" height="15"><path d="M12 7a5 5 0 100 10 5 5 0 000-10zm0-5v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M2 12h2m18 0h2M4.22 19.78l1.42-1.42M17.66 6.36l1.42-1.42" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+              <span id="mode-light-text">浅色</span>
+            </button>
+            <button id="btn-mode-dark" class="mode-btn" data-mode="dark">
+              <svg viewBox="0 0 24 24" width="15" height="15"><path d="M12.1 2.6a9.5 9.5 0 108.9 12.8A8 8 0 0112.1 2.6z" fill="currentColor"/></svg>
+              <span id="mode-dark-text">深色</span>
+            </button>
+          </div>
+        </div>
+        <div class="form-group">
           <label id="label-export">导出数据</label>
           <p id="export-desc" class="export-desc">将所有账户和密钥导出为 ZIP 压缩包</p>
           <button id="btn-export" class="btn btn-export">
@@ -109,8 +134,9 @@
             <span id="import-btn-text">导入</span>
           </button>
         </div>
-        <div class="modal-actions">
-          <button id="btn-settings-close" class="btn btn-cancel">关闭</button>
+        <div class="settings-version">
+          <span id="version-label">版本</span>
+          <span id="version-value"></span>
         </div>
       </div>
     </div>

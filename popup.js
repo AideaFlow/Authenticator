@@ -3,6 +3,10 @@ let editingId = null;
 let deleteId = null;
 let tickInterval = null;
 
+const THEME_COLORS = ['blue', 'green', 'teal', 'purple', 'pink', 'orange', 'gray'];
+let themeColor = 'blue';
+let themeMode = 'light';
+
 const $accountList = document.getElementById('account-list');
 const $emptyState = document.getElementById('empty-state');
 const $addModal = document.getElementById('add-modal');
@@ -46,8 +50,56 @@ function saveLang(lang) {
   });
 }
 
+function applyTheme() {
+  const root = document.documentElement;
+  root.setAttribute('data-color', themeColor);
+  root.setAttribute('data-mode', themeMode);
+}
+
+function loadTheme() {
+  return new Promise(resolve => {
+    chrome.storage.local.get({ themeColor: 'blue', themeMode: 'light' }, data => {
+      themeColor = THEME_COLORS.includes(data.themeColor) ? data.themeColor : 'blue';
+      themeMode = data.themeMode === 'dark' ? 'dark' : 'light';
+      applyTheme();
+      resolve();
+    });
+  });
+}
+
+function saveTheme() {
+  return new Promise(resolve => {
+    chrome.storage.local.set({ themeColor, themeMode }, resolve);
+  });
+}
+
+async function handleColorChange(color) {
+  if (!THEME_COLORS.includes(color) || color === themeColor) return;
+  themeColor = color;
+  applyTheme();
+  updateUI();
+  await saveTheme();
+}
+
+async function handleModeChange(mode) {
+  if (mode !== 'light' && mode !== 'dark') return;
+  if (mode === themeMode) return;
+  themeMode = mode;
+  applyTheme();
+  updateUI();
+  await saveTheme();
+}
+
 function generateId() {
   return Date.now().toString(36) + Math.random().toString(36).substring(2, 8);
+}
+
+function getVersion() {
+  try {
+    return chrome.runtime.getManifest().version;
+  } catch (e) {
+    return '';
+  }
 }
 
 function formatOTP(otp, digits) {
@@ -83,9 +135,12 @@ function updateUI() {
   document.getElementById('btn-delete-confirm').textContent = i18n('delete');
   document.getElementById('settings-title').textContent = i18n('settings');
   document.getElementById('label-language').textContent = i18n('language');
+  document.getElementById('label-color').textContent = i18n('themeColor');
+  document.getElementById('label-mode').textContent = i18n('appearance');
+  document.getElementById('mode-light-text').textContent = i18n('lightMode');
+  document.getElementById('mode-dark-text').textContent = i18n('darkMode');
   document.getElementById('btn-lang-zh').textContent = i18n('chinese');
   document.getElementById('btn-lang-en').textContent = i18n('english');
-  document.getElementById('btn-settings-close').textContent = i18n('cancel');
   document.getElementById('label-export').textContent = i18n('exportData');
   document.getElementById('export-desc').textContent = i18n('exportDesc');
   document.getElementById('export-btn-text').textContent = i18n('exportBtn');
@@ -101,10 +156,26 @@ function updateUI() {
   document.getElementById('scan-method-desc').textContent = i18n('scanMethodDesc');
   document.getElementById('btn-auto-scan').title = i18n('autoScan');
   document.getElementById('footer-notice').textContent = i18n('footerNotice');
+  document.getElementById('version-label').textContent = i18n('version');
+  document.getElementById('version-value').textContent = getVersion();
 
   const lang = getLang();
   document.getElementById('btn-lang-zh').classList.toggle('active', lang === 'zh-CN');
   document.getElementById('btn-lang-en').classList.toggle('active', lang === 'en');
+
+  const colorNames = {
+    blue: 'colorBlue', green: 'colorGreen', teal: 'colorTeal',
+    purple: 'colorPurple', pink: 'colorPink', orange: 'colorOrange', gray: 'colorGray'
+  };
+  document.querySelectorAll('.color-swatch').forEach(btn => {
+    const color = btn.dataset.color;
+    btn.classList.toggle('active', color === themeColor);
+    btn.title = i18n(colorNames[color]);
+    btn.setAttribute('aria-label', i18n(colorNames[color]));
+  });
+  document.querySelectorAll('.mode-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.mode === themeMode);
+  });
 }
 
 async function renderCards() {
@@ -343,10 +414,17 @@ document.getElementById('btn-cancel').addEventListener('click', closeAddModal);
 document.getElementById('btn-save').addEventListener('click', handleSave);
 document.getElementById('btn-delete-cancel').addEventListener('click', closeDeleteModal);
 document.getElementById('btn-delete-confirm').addEventListener('click', handleDelete);
-document.getElementById('btn-settings-close').addEventListener('click', closeSettingsModal);
 
 document.getElementById('btn-lang-zh').addEventListener('click', () => handleLangChange('zh-CN'));
 document.getElementById('btn-lang-en').addEventListener('click', () => handleLangChange('en'));
+
+document.querySelectorAll('.color-swatch').forEach(btn => {
+  btn.addEventListener('click', () => handleColorChange(btn.dataset.color));
+});
+
+document.querySelectorAll('.mode-btn').forEach(btn => {
+  btn.addEventListener('click', () => handleModeChange(btn.dataset.mode));
+});
 
 document.getElementById('btn-export').addEventListener('click', () => {
   if (accounts.length === 0) {
@@ -572,6 +650,7 @@ document.getElementById('btn-auto-scan').addEventListener('click', async () => {
 
 async function init() {
   await loadLang();
+  await loadTheme();
   await loadAccounts();
   updateUI();
   await renderCards();
